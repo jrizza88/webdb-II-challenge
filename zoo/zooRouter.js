@@ -15,6 +15,18 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:id', async (req, res) => {
+    try {
+        const {id} = req.params
+        const zoo = await db('zoos')
+        .where({id})
+        .first()
+        res.status(200).json(zoo);
+    } catch (error){
+        res.status(500).json({error: 'error with get request'})
+    }
+});
+
 router.post('/', async (req, res) => {
    try{
         
