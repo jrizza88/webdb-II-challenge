@@ -42,6 +42,27 @@ router.post('/', async (req, res) => {
    }
 });
 
+router.put('/:id', async (req, res) => {
+    try{
+        const {id} = req.params;
+
+        const edit = await db('zoos')
+            .where({id})
+            .update(req.body)
+
+        if(edit > 0) {
+            const zoo = await db('zoos')
+                .where({id})
+                .first()
+                res.status(201).json(edit)
+        } else {
+            res.status(404).json({message: 'This animal is not in our zoo!'})
+        }
+    } catch (error) {
+        res.status(500).json({message: "error with changing the animal"})
+    }
+});
+
 module.exports = router;
 
 		// "start": "nodemon index.js"
