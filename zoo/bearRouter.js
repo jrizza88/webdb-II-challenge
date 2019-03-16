@@ -15,4 +15,78 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:id', async(req, res) => {
+    try{
+        const {id} = req.params
+
+        const oneBear = await db('bears')
+            .where({id})
+            .first()
+        
+        if (oneBear) {
+            const bear = await db('bears')
+            .where({id})
+            .first()
+            res.status(200).json(bear)
+        } else {
+            res.status(404).json({message: 'There is no bear here, try a different route'})
+        }
+    } catch (error){
+        res.status(500).json({error: 'get id error'})
+    }
+});
+
+router.post('/', async (req, res) => {
+    try {
+        const bear = req.body;
+
+        const newBear = await db('bears')
+            .insert(bear)
+            .into('bears')
+            res.status(201).json(newBear)
+    } catch(error) {
+        res.status(500).json({error: 'post bear error'});
+    }
+});
+
+router.put('/:id', async (req, res) => {
+    try {
+        const {id} = req.params;
+        const theBears = req.body;
+
+        const changeBear = await db('bears')
+            .where({id})
+            .update(theBears)
+
+            if (changeBear > 0) {
+            const bear = await db('bears')
+            .where({id})
+            .first()
+                res.status(201).json(changeBear)
+            } else {
+                res.status(404).json({message: 'No bear is here...'})
+            }
+    } catch (error) {
+        res.status(500).json({error: 'put request bear error'});
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const {id} = req.params;
+        const theBears = req.body;
+
+        const removeBear = await db('bears')
+            .where({id})
+            .delete()
+        if (removeBear > 0) {
+            res.status(204).end()
+        } else {
+            res.status(404).json({message: 'Bear not found'})
+        }
+    } catch (error){
+        res.status(500).json({error: 'delete request bear error'});
+    }
+});
+
 module.exports = router;
