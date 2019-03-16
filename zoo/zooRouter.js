@@ -21,7 +21,15 @@ router.get('/:id', async (req, res) => {
         const zoo = await db('zoos')
         .where({id})
         .first()
-        res.status(200).json(zoo);
+        if (zoo) {
+            const animal = await db('zoos')
+            .where({id})
+            .first()
+            res.status(200).json(zoo);
+        } else {
+            res.status(404).json({message: 'Animal does not exist'});
+        }
+       
     } catch (error){
         res.status(500).json({error: 'error with get request'})
     }
@@ -62,6 +70,19 @@ router.put('/:id', async (req, res) => {
         res.status(500).json({message: "error with changing the animal"})
     }
 });
+
+router.delete('/:id', async (req, res) => {
+    try{
+        const {id} = req.params;
+
+        const remove = await db('zoos')
+            .where({id})
+            .delete()
+            res.status(404).json({message: 'Animal removed from this zoo :\'( '})
+    } catch (error){
+        res.status(500).json({error: 'The animal could not be deleted'})
+    }
+})
 
 module.exports = router;
 
