@@ -21,10 +21,13 @@ router.get('/:id', async(req, res) => {
             const bear = await db('bears')
             .where({id})
             .first()
+            if (!bear) {
+                return res.status(404).json({message: 'There is no bear here, try a different route'})
+             }
             res.status(200).json(bear)
-         if (!bear) {
-            res.status(404).json({message: 'There is no bear here, try a different route'})
-        }
+        //  if (bear) {
+        //    return res.status(404).json({message: 'There is no bear here, try a different route'})
+        // }
     } catch (error){
         res.status(500).json({error: 'get id error'})
     }
