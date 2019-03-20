@@ -25,9 +25,6 @@ router.get('/:id', async(req, res) => {
                 return res.status(404).json({message: 'There is no bear here, try a different route'})
              }
             res.status(200).json(bear)
-        //  if (bear) {
-        //    return res.status(404).json({message: 'There is no bear here, try a different route'})
-        // }
     } catch (error){
         res.status(500).json({error: 'get id error'})
     }
@@ -59,7 +56,7 @@ router.put('/:id', async (req, res) => {
             const bear = await db('bears')
             .where({id})
             .first()
-                res.status(201).json(changeBear)
+                res.status(200).json(changeBear)
             } else {
                 res.status(404).json({message: 'No bear is here...'})
             }

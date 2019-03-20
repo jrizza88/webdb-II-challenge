@@ -62,7 +62,7 @@ router.put('/:id', async (req, res) => {
             const zoo = await db('zoos')
                 .where({id})
                 .first()
-                res.status(201).json(edit)
+                res.status(200).json(edit)
         } else {
             res.status(404).json({message: 'This animal is not in our zoo!'})
         }
