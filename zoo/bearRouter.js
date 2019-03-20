@@ -18,17 +18,11 @@ router.get('/', async (req, res) => {
 router.get('/:id', async(req, res) => {
     try{
         const {id} = req.params
-
-        const oneBear = await db('bears')
-            .where({id})
-            .first()
-        
-        if (oneBear) {
             const bear = await db('bears')
             .where({id})
             .first()
             res.status(200).json(bear)
-        } else {
+         if (!bear) {
             res.status(404).json({message: 'There is no bear here, try a different route'})
         }
     } catch (error){
